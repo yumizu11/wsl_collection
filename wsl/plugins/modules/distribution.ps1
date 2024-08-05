@@ -99,14 +99,6 @@ if ($result.rc -eq 0) {
 }
 $module.Result.wsl_ver = $current_wsl_version
 
-
-# $current_wsl_version = "N/A"
-# $result = Invoke-WSL -Arg "--version"
-# if ($result.rc -eq 0) {
-#     $current_wsl_version = (($result.stdout.Split("`r`n"))[0].Split(":"))[1].Trim()
-# }
-# $module.Result.wsl_ver = $current_wsl_version
-
 $current_distro = Get-InstalledDistro
 if ($current_distro.rc -ne 0) {
     $module.Result.stdout = $current_distro.stdout
@@ -166,6 +158,7 @@ if ($state -eq "present" -or $state -eq "installed" -or $state -eq "reset") {
         }
 
         if (($state -eq "installed" -or $state -eq "reset") -and ($default_user -ne "" -or $run_cmd.length -ne 0)) {
+            # Currently default user creation and initialize commands execution features are available only on Ubuntu distributions
             if ($name.StartsWith("Ubuntu")) {
                 $userprofile_dir = [environment]::getfolderpath("UserProfile")
                 $conf_folder = Join-Path -Path $userprofile_dir -ChildPath ".cloud-init"
