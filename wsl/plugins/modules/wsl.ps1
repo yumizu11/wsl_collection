@@ -33,7 +33,6 @@ function Invoke-WSL {
 $spec = @{
     options = @{
         state = @{ type = "str"; choices = "present", "absent", "shutdown", "updated"; default = "present" }
-        default_version = @{ type = "int"  }
     }
     # supports_check_mode = $true
 }
@@ -41,7 +40,6 @@ $spec = @{
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 
 $state = $module.Params.state
-$default_version = $module.Params.default_version
 
 $module.Result.changed = $false
 
