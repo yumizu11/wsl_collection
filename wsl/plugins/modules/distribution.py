@@ -13,6 +13,7 @@ version_added: "0.1"
 
 description:
     - "This module installs and uninstalls a specified WSL distribution (like Ubuntu-24.04). This module also terminates or unregisters running distribution"
+    - "Store version of WSL must be installed to use this module. The yumizu11.wsl.wsl module can install store version of wsl. Please see the document of yumizu11.wsl.wsl for more information."
 
 options:
     name:
@@ -21,7 +22,7 @@ options:
         required: false
     state:
         description:
-            - Specifying one of 'present' (disto package is installed), 'absent' (distro is unregistered and package is uninstalled), 'installed' (distro package is unsitannled and registered), 'terminated' (distro state is stopped), 'unregistered' (distro is unregistered, but package is not uninstalled), 'exported' (distro is exported to .tar or .vhdx file), 'imported' (distro is installed from .tar or .vhdx file), or 'queried' (registered distros are enumerated).
+            - Specifying one of 'present' (disto package is installed), 'absent' (distro is unregistered and package is uninstalled), 'installed' (distro package is unsitannled and registered), 'terminated' (distro state is stopped), 'unregistered' (distro is unregistered, but package is not uninstalled), 'exported' (distro is exported to .tar or .vhdx file), 'imported' (distro is installed from .tar or .vhdx file), or 'query' (registered distros are enumerated).
         required: true
     is_default:
         description:
@@ -53,19 +54,23 @@ author:
 
 EXAMPLES = '''
 # Install Ubuntu-24.04
+- name: Ensure store version of WSL is installed
+  yumizu11.wsl.wsl:
+    state: present
+
 - name: Install Ubuntu-24.04
   yumizu11.wsl.distribution:
     name: Ubuntu-24.04
 
 # Install Ubuntu-24.04 with creating default user
-- name: Install Ubuntu-24.04 with creating user hohn
+- name: Install Ubuntu-24.04 with creating user john
   yumizu11.wsl.distribution:
     name: Ubuntu-24.04
     default_user: john
     state: installed
 
 # Install Ubuntu-24.04 with creating default user and install the latest version of Ansible
-- name: Install Ubuntu-24.04 with creating user hohn
+- name: Install Ubuntu-24.04 with creating user john and install ansible
   yumizu11.wsl.distribution:
     name: Ubuntu-24.04
     default_user: john
@@ -76,7 +81,7 @@ EXAMPLES = '''
         - apt install ansible -y
     state: installed
 
-# Uninstall Ubuntu-24.04
+# Uninstall Ubuntu-24.04 if installed
 - name: Uninstall Ubuntu-24.04
   yumizu11.wsl.distribution:
     name: Ubuntu-24.04
@@ -102,7 +107,7 @@ EXAMPLES = '''
     state: exported
 
 # Export a distro to a vhdx file
-- name: Export a distro to (vhdx)
+- name: Export a distro (vhdx)
   yumizu11.wsl.distribution:
     name: kali-linux
     dest: C:\\temp\\kali.vhdx
@@ -128,7 +133,7 @@ EXAMPLES = '''
 # Query installed distro
 - name: Query installed distro
   yumizu11.wsl.distribution:
-    state: queried
+    state: query
     register: query_result
 
 - name: Debug - show query_result
@@ -162,7 +167,7 @@ couldinit_rc:
     type: number
     returned: when cloud-init is used after installing distro
 wsl_path:
-    description: path to wsl.exe the module used
+    description: path to wsl.exe which the module used
     type: str
     returned: always
 wsl_version:

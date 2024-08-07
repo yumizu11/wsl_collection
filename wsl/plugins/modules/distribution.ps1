@@ -59,7 +59,7 @@ function Get-InstalledDistro {
 $spec = @{
     options = @{
         name = @{ type = "str"; required = $false }
-        state = @{ type = "str"; choices = "absent", "present", "installed", "queried", "reset", "terminated", "unregistered", "exported", "imported"; default = "present" }
+        state = @{ type = "str"; choices = "absent", "present", "installed", "query", "reset", "terminated", "unregistered", "exported", "imported"; default = "present" }
         is_default = @{ type = "bool"; default = $false}
         default_user = @{ type = "str"; required = $false }
         run_cmd = @{ type = "list"; required = $false }
@@ -260,7 +260,7 @@ if ($state -eq "absent") {
         $module.Result.default_distro = $current_distro.default_distro
     }
 }
-if ($state -eq "queried") {
+if ($state -eq "query") {
     $module.Result.installed_distro = $installed_distro
     $module.Result.default_distro = $default_distro
 }

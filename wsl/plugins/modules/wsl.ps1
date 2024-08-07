@@ -79,6 +79,7 @@ if (($state -eq "present" -or $state -eq "updated" ) -and ((Test-Path -Path $wsl
         $newver = (($result.stdout.Split("`r`n"))[0].Split(":"))[1].Trim()
         if ($currentver -ne $newver) {
             $module.Result.changed = $true
+            $module.Result.currenver = $newver
         }
     }
 } elseif ($state -eq "absent" -and (Test-Path -Path $wsl_path)) {
